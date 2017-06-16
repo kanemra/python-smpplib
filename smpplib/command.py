@@ -125,11 +125,12 @@ class Command(pdu.PDU):
             self.prep()
 
         body = consts.EMPTY_STRING
+        logger.debug("body: %r, type: %s", body, type(body))
 
         for field in self.params_order:
-            #print field
+            logger.debug("field: %s", field)
             param = self.params[field]
-            #print param
+            logger.debug("param: %s", param)
             if self.field_is_optional(field):
                 if param.type is int:
                     value = self._generate_int_tlv(field)
@@ -152,9 +153,10 @@ class Command(pdu.PDU):
                     body += value
                 elif param.type is ostr:
                     value = self._generate_ostring(field)
+                    logger.debug("value: %s", value)
                     if value:
                         body += value
-            #print value
+            logger.debug("value: %s", value)
         return body
 
     def _generate_opt_header(self, field):
